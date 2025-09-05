@@ -14,10 +14,24 @@ public class SpaceDeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String code = req.getParameter("code");
-        if (code != null && !code.trim().isEmpty()) {
-            try { dao.delete(code); } catch (Exception ignore) {}
+
+        // Hỗ trợ cả hai tên tham số: id hoặc code
+        String code = firstNonBlank(req.getParameter("id"), req.getParameter("code"));
+
+        if (code != null) {
+            try {
+                dao.delete(code.trim());
+            } catch (Exception e) {
+                // Có thể log ra để debug, tránh nuốt lỗi
+                // e.printStackTrace();
+            }
         }
         resp.sendRedirect(req.getContextPath() + "/spaces");
+    }
+
+    private static String firstNonBlank(String a, String b) {
+        if (a != null && !a.trim().isEmpty()) return a;
+        if (b != null && !b.trim().isEmpty()) return b;
+        return null;
     }
 }
