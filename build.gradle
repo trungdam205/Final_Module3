@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.gretty' version '3.0.9'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    implementation 'javax.servlet:jstl:1.2'
+
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.apache.commons:commons-dbcp2:2.9.0'
+
+    testImplementation 'junit:junit:4.13.2'
+}
+
+gretty {
+    servletContainer = "tomcat9"
+    httpPort = 8080
+    contextPath = "/"
+}
